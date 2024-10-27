@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    >
+
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_item_inicio"
+            android:icon="@drawable/vector_inicio"
+            android:title="Inicio" />
+        <item
+            android:id="@+id/nav_item_micuenta"
+            android:icon="@drawable/vector_micuenta"
+            android:title="Mi Cuenta" />
+        <item
+            android:id="@+id/nav_item_nosotros"
+            android:icon="@drawable/vector_nosotros"
+            android:title="Nosotros" />
+        <item
+            android:id="@+id/nav_item_contactanos"
+            android:icon="@drawable/vector_contactanos"
+            android:title="Contáctanos" />
+        <item
+            android:id="@+id/nav_item_mipedido"
+            android:icon="@drawable/vector_pedido"
+            android:title="Mi Pedido" />
+    </group>
+</menu>
