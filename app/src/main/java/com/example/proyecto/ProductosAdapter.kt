@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-
 class ProductosAdapter(private val productos: List<Producto>) :
     RecyclerView.Adapter<ProductosAdapter.ProductoViewHolder>() {
 

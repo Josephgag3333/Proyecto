@@ -42,6 +42,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
     implementation("androidx.drawerlayout:drawerlayout:1.2.0");
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
     implementation(libs.androidx.core.ktx)

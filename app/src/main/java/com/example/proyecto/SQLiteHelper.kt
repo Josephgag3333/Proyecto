@@ -6,19 +6,29 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class SQLiteHelper (context: Context): SQLiteOpenHelper (context,
-    "LoveCareApp.db", null,1){
+class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, "LoveCareApp.db", null, 1) {
+
+    companion object {
+        private const val TABLE_USERS = "Usuarios"
+        private const val TABLE_SESSIONS = "Sesiones"
+        private const val COLUMN_USER_ID = "idUsuario"
+        private const val COLUMN_USER_FIRSTNAME = "etNombres"
+        private const val COLUMN_USER_LASTNAME = "etApellidos"
+        private const val COLUMN_USER_EMAIL = "etEmail"
+        private const val COLUMN_USER_PHONE = "etTelefono"
+        private const val COLUMN_USER_PASSWORD = "etPassword"
+    }
 
     override fun onCreate(db: SQLiteDatabase?) {
         // Creación de la tabla Usuarios
         val ordenCreacionUsuarios = """
-            CREATE TABLE Usuarios (
-                idUsuario INTEGER PRIMARY KEY AUTOINCREMENT,
-                etNombres TEXT NOT NULL,
-                etApellidos TEXT NOT NULL,
-                etEmail TEXT UNIQUE NOT NULL,
-                etTelefono TEXT,
-                etPassword TEXT NOT NULL,
+            CREATE TABLE $TABLE_USERS (
+                $COLUMN_USER_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COLUMN_USER_FIRSTNAME TEXT NOT NULL,
+                $COLUMN_USER_LASTNAME TEXT NOT NULL,
+                $COLUMN_USER_EMAIL TEXT UNIQUE NOT NULL,
+                $COLUMN_USER_PHONE TEXT,
+                $COLUMN_USER_PASSWORD TEXT NOT NULL,
                 fechaRegistro DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         """
@@ -26,54 +36,50 @@ class SQLiteHelper (context: Context): SQLiteOpenHelper (context,
 
         // Creación de la tabla Sesiones
         val ordenCreacionSesiones = """
-            CREATE TABLE Sesiones (
+            CREATE TABLE $TABLE_SESSIONS (
                 idSesion INTEGER PRIMARY KEY AUTOINCREMENT,
-                idUsuario INTEGER,
+                $COLUMN_USER_ID INTEGER,
                 fechaInicio DATETIME DEFAULT CURRENT_TIMESTAMP,
                 fechaFin DATETIME,
                 estado TEXT CHECK(estado IN ('activo', 'inactivo')),
-                FOREIGN KEY(idUsuario) REFERENCES Usuarios(idUsuario)
+                FOREIGN KEY($COLUMN_USER_ID) REFERENCES $TABLE_USERS($COLUMN_USER_ID)
             )
         """
-        db!!.execSQL(ordenCreacionSesiones)
+        db.execSQL(ordenCreacionSesiones)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         // Eliminar tablas si existen y recrearlas
-        db!!.execSQL("DROP TABLE IF EXISTS Usuarios")
-        db.execSQL("DROP TABLE IF EXISTS Sesiones")
+        db!!.execSQL("DROP TABLE IF EXISTS $TABLE_USERS")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_SESSIONS")
         onCreate(db)
     }
 
     // Método para añadir datos a la tabla Usuarios (Registro)
-    fun anadirUsuario(
-        etNombres: String, etApellidos: String, etEmail: String,
-        etTelefono: String, etPassword: String
-    ) {
-        val datos = ContentValues()
-        datos.put("etNombres", etNombres)
-        datos.put("etApellidos", etApellidos)
-        datos.put("etEmail", etEmail)
-        datos.put("etTelefono", etTelefono)
-        datos.put("etPassword", etPassword)
+    fun anadirUsuario(etNombres: String, etApellidos: String, etEmail: String, etTelefono: String, etPassword: String) {
+        val datos = ContentValues().apply {
+            put(COLUMN_USER_FIRSTNAME, etNombres)
+            put(COLUMN_USER_LASTNAME, etApellidos)
+            put(COLUMN_USER_EMAIL, etEmail)
+            put(COLUMN_USER_PHONE, etTelefono)
+            put(COLUMN_USER_PASSWORD, etPassword)
+        }
 
-        // Guardar los datos con writableDatabase
-        val db = this.writableDatabase
-        db.insert("Usuarios", null, datos)
-        db.close()
+        writableDatabase.use { db ->
+            db.insert(TABLE_USERS, null, datos)
+        }
     }
 
     // Método para iniciar sesión
     fun iniciarSesion(etEmail: String, etPassword: String): Boolean {
-        val db = this.readableDatabase
-        val consulta = "SELECT idUsuario FROM Usuarios WHERE etEmail = ? AND etPassword = ?"
+        val db = readableDatabase
+        val consulta = "SELECT $COLUMN_USER_ID FROM $TABLE_USERS WHERE $COLUMN_USER_EMAIL = ? AND $COLUMN_USER_PASSWORD = ?"
         val cursor: Cursor = db.rawQuery(consulta, arrayOf(etEmail, etPassword))
 
-        // Verificar si existe un usuario con las credenciales proporcionadas
         val resultado = cursor.count > 0
         if (resultado) {
             cursor.moveToFirst()
-            val idUsuario = cursor.getInt(cursor.getColumnIndexOrThrow("idUsuario"))
+            val idUsuario = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID))
             registrarSesion(idUsuario)
         }
 
@@ -84,23 +90,43 @@ class SQLiteHelper (context: Context): SQLiteOpenHelper (context,
 
     // Método para registrar una nueva sesión
     private fun registrarSesion(idUsuario: Int) {
-        val datos = ContentValues()
-        datos.put("idUsuario", idUsuario)
-        datos.put("estado", "activo")
+        val datos = ContentValues().apply {
+            put(COLUMN_USER_ID, idUsuario)
+            put("estado", "activo")
+        }
 
-        val db = this.writableDatabase
-        db.insert("Sesiones", null, datos)
-        db.close()
+        writableDatabase.use { db ->
+            db.insert(TABLE_SESSIONS, null, datos)
+        }
     }
 
     // Método para cerrar sesión
     fun cerrarSesion(idUsuario: Int) {
-        val db = this.writableDatabase
-        val valores = ContentValues()
-        valores.put("estado", "inactivo")
-        valores.put("fechaFin", "datetime('now')")
+        val valores = ContentValues().apply {
+            put("estado", "inactivo")
+            put("fechaFin", "datetime('now')")
+        }
 
-        db.update("Sesiones", valores, "idUsuario = ? AND estado = 'activo'", arrayOf(idUsuario.toString()))
+        writableDatabase.use { db ->
+            db.update(TABLE_SESSIONS, valores, "$COLUMN_USER_ID = ? AND estado = 'activo'", arrayOf(idUsuario.toString()))
+        }
+    }
+
+    // Método para obtener el nombre completo del usuario a partir del email
+    fun obtenerNombreUsuario(etEmail: String): String {
+        val db = readableDatabase
+        val consulta = "SELECT $COLUMN_USER_FIRSTNAME, $COLUMN_USER_LASTNAME FROM $TABLE_USERS WHERE $COLUMN_USER_EMAIL = ?"
+        val cursor: Cursor = db.rawQuery(consulta, arrayOf(etEmail))
+        var nombreCompleto = "Usuario"
+
+        if (cursor.moveToFirst()) {
+            val nombres = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_FIRSTNAME))
+            val apellidos = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_LASTNAME))
+            nombreCompleto = "$nombres $apellidos"
+        }
+
+        cursor.close()
         db.close()
+        return nombreCompleto
     }
 }

@@ -1,4 +1,5 @@
 package com.example.proyecto
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Rect
 import android.os.Bundle
@@ -67,7 +68,10 @@ class ActivityInicio : AppCompatActivity() {
                 Producto("Anthelios UV Mune400 SPF50+ - La Roche Posay", "Protección Solar", R.drawable.segunda),
                 Producto("Photoderm AR SPF50+ - Bioderma", "Protección Solar", R.drawable.primera),
                 Producto("Anthelios UV Mune400 SPF50+ - La Roche Posay", "Protección Solar", R.drawable.segunda)
+
             ))
         )
     }
+
+
 }

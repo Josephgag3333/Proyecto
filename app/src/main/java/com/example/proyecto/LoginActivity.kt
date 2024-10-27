@@ -1,5 +1,6 @@
 package com.example.proyecto
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -33,11 +34,20 @@ class LoginActivity : AppCompatActivity() {
                 val inicioExitoso = registrarDBHelper.iniciarSesion(email, password)
 
                 if (inicioExitoso) {
-                    // Mostrar mensaje de inicio de sesión exitoso y redirigir a otra pantalla si es necesario
+                    // Recuperar el nombre completo del usuario desde la base de datos
+                    val userName = registrarDBHelper.obtenerNombreUsuario(email)
+
+                    // Guarda el nombre y el correo en SharedPreferences
+                    val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.putString("user_name", userName) // Nombre del usuario
+                    editor.putString("user_email", email) // Correo del usuario
+                    editor.apply()
+
+                    // Mostrar mensaje de inicio de sesión exitoso
                     Toast.makeText(this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
-                    // Aquí puedes redirigir a la pantalla principal o dashboard
-                    // val intent = Intent(this, MainActivity::class.java)
-                    // startActivity(intent)
+
+                    // Redirigir a NavigationActivity
                     val intent = Intent(this, NavigationActivity::class.java)
                     startActivity(intent)
                     finish()
