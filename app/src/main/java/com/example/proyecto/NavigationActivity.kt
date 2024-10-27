@@ -1,6 +1,6 @@
 package com.example.proyecto
-
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
@@ -96,7 +96,7 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             else -> false
         }
     }
-
+    // Comente por momento lo de menu.xml
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_item_inicio -> Toast.makeText(this, "Inicio", Toast.LENGTH_SHORT).show()
@@ -119,11 +119,39 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         super.onConfigurationChanged(newConfig)
         toggle.onConfigurationChanged(newConfig)
     }
-
+/* // Para cerrar sesion
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }*/
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_logout -> {
+                // Lógica para cerrar sesión
+                cerrarSesion()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
+
+    private fun cerrarSesion() {
+        val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
+
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+
 }

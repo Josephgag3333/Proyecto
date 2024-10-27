@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-
-    >
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <group android:checkableBehavior="single">
+
         <item
             android:id="@+id/nav_item_inicio"
             android:icon="@drawable/vector_inicio"
-            android:title="Inicio" />
+            android:title="Inicio"
+            />
         <item
             android:id="@+id/nav_item_micuenta"
             android:icon="@drawable/vector_micuenta"
@@ -26,5 +25,11 @@
             android:id="@+id/nav_item_mipedido"
             android:icon="@drawable/vector_pedido"
             android:title="Mi Pedido" />
+        <!-- Opcion salir -->
+        <item
+            android:id="@+id/action_logout"
+            android:title="Cerrar Sesión"
+            android:icon="@drawable/baseline_logout_24"
+            app:showAsAction="always" />
     </group>
 </menu>

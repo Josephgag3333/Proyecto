@@ -3,8 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="140dp"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp">
-
+    android:layout_margin="4dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+<!--Eperimental line 8 -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="140dp"
