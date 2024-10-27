@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -94,11 +95,12 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 true
             }
             R.id.nav_item_micuenta -> {
-                Toast.makeText(this, "Mi Cuenta seleccionada", Toast.LENGTH_SHORT).show()
+                // Toast.makeText(this, "Mi Cuenta seleccionada", Toast.LENGTH_SHORT).show()
                 supportFragmentManager.commit {
                     replace<MiCuentaFragment>(R.id.frameContainer)
                     setReorderingAllowed(true)
-                    addToBackStack(null)
+                    addToBackStack("replacement")
+
                 }
                 true
             }
@@ -107,32 +109,12 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         }
     }
     // Comente por momento lo de menu.xml
-    /*
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_item_inicio -> Toast.makeText(this, "Inicio", Toast.LENGTH_SHORT).show()
             R.id.nav_item_micuenta -> {
                 supportFragmentManager.commit {
                     replace<MiCuentaFragment>(R.id.frameContainer)
-                    setReorderingAllowed(true)
-                    addToBackStack("replacement")
-                }
-            }
-            R.id.nav_item_nosotros -> Toast.makeText(this, "Nosotros", Toast.LENGTH_SHORT).show()
-            R.id.nav_item_contactanos -> Toast.makeText(this, "Contactanos", Toast.LENGTH_SHORT).show()
-            R.id.nav_item_mipedido -> Toast.makeText(this, "MiPedido", Toast.LENGTH_SHORT).show()
-            R.id.action_logout -> mostrarDialogoCerrarSesion()
-
-        }
-
-        drawer.closeDrawer(GravityCompat.START)
-        return true
-    }*/
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.nav_item_micuenta -> {
-                supportFragmentManager.commit {
-                    replace<MiCuentaFragment>(R.id.frameContainer) // Reemplaza con tu fragment de cuenta
                     setReorderingAllowed(true)
                     addToBackStack(null)
                 }
@@ -194,8 +176,21 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 mostrarDialogoCerrarSesion()
                 true
             }
+            R.id.action_micuenta -> {
+                mostrarMiCuenta()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun mostrarMiCuenta() {
+        supportFragmentManager.commit {
+            replace<MiCuentaFragment>(R.id.frameContainer)
+            setReorderingAllowed(true)
+            addToBackStack(null)
+        }
+        true
     }
 
 
@@ -210,5 +205,6 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         startActivity(intent)
         finish()
     }
+
 
 }

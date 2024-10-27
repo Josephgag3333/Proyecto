@@ -2,7 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single"
+        app:showAsAction="never"
+        >
 
         <item
             android:id="@+id/nav_item_inicio"
@@ -12,7 +14,9 @@
         <item
             android:id="@+id/nav_item_micuenta"
             android:icon="@drawable/vector_micuenta"
+            app:showAsAction="always"
             android:title="Mi Cuenta" />
+        <!-- Experimental -->
         <item
             android:id="@+id/nav_item_nosotros"
             android:icon="@drawable/vector_nosotros"
@@ -30,6 +34,11 @@
             android:id="@+id/action_logout"
             android:title="Cerrar Sesión"
             android:icon="@drawable/baseline_logout_24"
+            app:showAsAction="always" />
+        <item
+            android:id="@+id/action_micuenta"
+            android:title="Micuenta"
+            android:icon="@drawable/item_micuenta"
             app:showAsAction="always" />
     </group>
 </menu>
