@@ -129,4 +129,50 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, "LoveCareApp.db
         db.close()
         return nombreCompleto
     }
+
+
+    // Queries por si a caso para gestion del Usuario
+
+    // Obtener usuario por ID
+    fun obtenerUsuarioPorId(idUsuario: Int): Usuario? {
+        val db = readableDatabase
+        val consulta = "SELECT * FROM $TABLE_USERS WHERE $COLUMN_USER_ID = ?"
+        val cursor: Cursor = db.rawQuery(consulta, arrayOf(idUsuario.toString()))
+
+        var usuario: Usuario? = null
+        if (cursor.moveToFirst()) {
+            val nombres = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_FIRSTNAME))
+            val apellidos = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_LASTNAME))
+            val email = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_EMAIL))
+            val telefono = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_PHONE))
+            usuario = Usuario(idUsuario, nombres, apellidos, email, telefono)
+        }
+
+        cursor.close()
+        db.close()
+        return usuario
+    }
+
+    // Eliminar cuenta de usuario por ID
+    fun eliminarCuentaUsuario(idUsuario: Int): Boolean {
+        val db = writableDatabase
+        val resultado = db.delete(TABLE_USERS, "$COLUMN_USER_ID = ?", arrayOf(idUsuario.toString()))
+        db.close()
+        return resultado > 0
+    }
+
+    // Editar los datos de un usuario
+    fun editarUsuario(idUsuario: Int, etNombres: String, etApellidos: String, etEmail: String, etTelefono: String): Boolean {
+        val valores = ContentValues().apply {
+            put(COLUMN_USER_FIRSTNAME, etNombres)
+            put(COLUMN_USER_LASTNAME, etApellidos)
+            put(COLUMN_USER_EMAIL, etEmail)
+            put(COLUMN_USER_PHONE, etTelefono)
+        }
+
+        val db = writableDatabase
+        val resultado = db.update(TABLE_USERS, valores, "$COLUMN_USER_ID = ?", arrayOf(idUsuario.toString()))
+        db.close()
+        return resultado > 0
+    }
 }
