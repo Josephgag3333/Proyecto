@@ -51,7 +51,7 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val userName = sharedPreferences.getString("user_name", "Usuario")
         val userEmail = sharedPreferences.getString("user_email", "email@example.com")
-
+        //  user_name  user_email          etEmail
         userNameTextView.text = userName
         userEmailTextView.text = userEmail
 

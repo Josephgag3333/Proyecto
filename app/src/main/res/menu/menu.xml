@@ -2,43 +2,46 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:checkableBehavior="single"
-        app:showAsAction="never"
-        >
+    <group android:checkableBehavior="single" >
 
         <item
             android:id="@+id/nav_item_inicio"
             android:icon="@drawable/vector_inicio"
-            android:title="Inicio"
-            />
+            android:title="Inicio" />
+
         <item
             android:id="@+id/nav_item_micuenta"
             android:icon="@drawable/vector_micuenta"
-            app:showAsAction="always"
             android:title="Mi Cuenta" />
-        <!-- Experimental -->
+
         <item
             android:id="@+id/nav_item_nosotros"
             android:icon="@drawable/vector_nosotros"
             android:title="Nosotros" />
+
         <item
             android:id="@+id/nav_item_contactanos"
             android:icon="@drawable/vector_contactanos"
             android:title="Contáctanos" />
+
         <item
             android:id="@+id/nav_item_mipedido"
             android:icon="@drawable/vector_pedido"
             android:title="Mi Pedido" />
-        <!-- Opcion salir -->
+
         <item
             android:id="@+id/action_logout"
             android:title="Cerrar Sesión"
             android:icon="@drawable/baseline_logout_24"
-            app:showAsAction="always" />
+            app:showAsAction="always"
+             />
         <item
             android:id="@+id/action_micuenta"
             android:title="Micuenta"
             android:icon="@drawable/item_micuenta"
-            app:showAsAction="always" />
+            app:showAsAction="always"
+             />
+
+        <!-- action_micuenta -->
     </group>
 </menu>
