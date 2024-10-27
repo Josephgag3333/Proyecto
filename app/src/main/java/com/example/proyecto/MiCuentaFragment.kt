@@ -25,10 +25,15 @@ class MiCuentaFragment : Fragment() {
         val emailUsuario = sharedPreferences.getString("user_email", "")
 
         val usuario = sqliteHelper.obtenerDatosUsuario(emailUsuario!!)
-        binding.etNombre.setText(usuario.nombres)
-        binding.etApellidos.setText(usuario.apellidos)
-        binding.etEmail.setText(usuario.email)
-        binding.etTelefono.setText(usuario.telefono)
+
+        if (usuario != null) {
+            binding.etNombre.setText(usuario.nombres)
+            binding.etApellidos.setText(usuario.apellidos)
+            binding.etEmail.setText(usuario.email)
+            binding.etTelefono.setText(usuario.telefono)
+        } else {
+            Toast.makeText(requireContext(), "Error: No se encontraron datos del usuario", Toast.LENGTH_SHORT).show()
+        }
 
         binding.btnEditarCuenta.setOnClickListener {
             mostrarDialogoConfirmacionEditar()
@@ -58,7 +63,6 @@ class MiCuentaFragment : Fragment() {
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
-
 
     private fun mostrarDialogoConfirmacionEliminar(email: String) {
         val builder = AlertDialog.Builder(requireContext())
