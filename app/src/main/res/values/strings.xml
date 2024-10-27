@@ -15,5 +15,12 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
 
+    <string name="apellidos_hint">Apellidos</string>
+    <string name="email_hint">Email</string>
+    <string name="telefono_hint">Teléfono</string>
 
+
+
+    <string name="editar_cuenta">Editar Cuenta</string>
+    <string name="eliminar_cuenta">Eliminar Cuenta</string>
 </resources>

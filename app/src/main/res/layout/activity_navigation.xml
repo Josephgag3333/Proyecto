@@ -36,9 +36,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize"
-
+            android:layout_below="@id/toolbar_main"
             android:paddingBottom="80dp"
-
+            android:background="#C8E69A"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <!-- Barra de navegación inferior -->

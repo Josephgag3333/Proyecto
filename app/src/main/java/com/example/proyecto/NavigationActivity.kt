@@ -1,4 +1,5 @@
 package com.example.proyecto
+import com.example.proyecto.MiCuentaFragment
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -91,31 +93,61 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 }
                 true
             }
+            R.id.nav_item_micuenta -> {
+                Toast.makeText(this, "Mi Cuenta seleccionada", Toast.LENGTH_SHORT).show()
+                supportFragmentManager.commit {
+                    replace<MiCuentaFragment>(R.id.frameContainer)
+                    setReorderingAllowed(true)
+                    addToBackStack(null)
+                }
+                true
+            }
+
             else -> false
         }
     }
     // Comente por momento lo de menu.xml
+    /*
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_item_inicio -> Toast.makeText(this, "Inicio", Toast.LENGTH_SHORT).show()
-            R.id.nav_item_micuenta -> Toast.makeText(this, "MiCuenta", Toast.LENGTH_SHORT).show()
-            R.id.nav_item_nosotros -> Toast.makeText(this, "Nosotros", Toast.LENGTH_SHORT).show()
-            R.id.nav_item_contactanos -> Toast.makeText(this, "Contactanos", Toast.LENGTH_SHORT).show()
-            R.id.nav_item_mipedido -> Toast.makeText(this, "MiPedido", Toast.LENGTH_SHORT).show()
-            R.id.action_logout -> mostrarDialogoCerrarSesion()
-
-            // Para llamar al usuario menu
             R.id.nav_item_micuenta -> {
                 supportFragmentManager.commit {
                     replace<MiCuentaFragment>(R.id.frameContainer)
                     setReorderingAllowed(true)
                     addToBackStack("replacement")
                 }
-                true
             }
+            R.id.nav_item_nosotros -> Toast.makeText(this, "Nosotros", Toast.LENGTH_SHORT).show()
+            R.id.nav_item_contactanos -> Toast.makeText(this, "Contactanos", Toast.LENGTH_SHORT).show()
+            R.id.nav_item_mipedido -> Toast.makeText(this, "MiPedido", Toast.LENGTH_SHORT).show()
+            R.id.action_logout -> mostrarDialogoCerrarSesion()
 
         }
 
+        drawer.closeDrawer(GravityCompat.START)
+        return true
+    }*/
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_item_micuenta -> {
+                supportFragmentManager.commit {
+                    replace<MiCuentaFragment>(R.id.frameContainer) // Reemplaza con tu fragment de cuenta
+                    setReorderingAllowed(true)
+                    addToBackStack(null)
+                }
+                true
+            }
+            R.id.nav_item_inicio -> {
+                supportFragmentManager.commit {
+                    replace<InicioFragment>(R.id.frameContainer)
+                    setReorderingAllowed(true)
+                    addToBackStack(null)
+                }
+                true
+            }
+            else -> false
+        }
         drawer.closeDrawer(GravityCompat.START)
         return true
     }

@@ -44,6 +44,7 @@ class MiCuentaFragment : Fragment() {
         }
 
         return binding.root
+        // return inflater.inflate(R.layout.fragment_mi_cuenta, container, false)
     }
 
     private fun mostrarDialogoConfirmacionEditar() {
