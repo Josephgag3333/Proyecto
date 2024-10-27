@@ -1,5 +1,4 @@
 package com.example.proyecto
-
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.proyecto.databinding.ActivityHomeBinding
@@ -10,10 +9,14 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Inflar el layout con ViewBinding
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Aquí puedes agregar cualquier lógica o inicialización adicional que necesites
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_activity_inicio, InicioFragment())
+                .commitNow()
+        }
+
     }
 }

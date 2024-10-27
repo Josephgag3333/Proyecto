@@ -1,5 +1,4 @@
 package com.example.proyecto
-
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
@@ -12,6 +11,8 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.navigateUp
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
 
 class NavigationActivity: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -27,8 +28,12 @@ class NavigationActivity: AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         drawer = findViewById(R.id.drawer_layout)
 
-        toggle=ActionBarDrawerToggle(this,drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close)
+        /*toggle=ActionBarDrawerToggle(this,drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close)
+        drawer.addDrawerListener(toggle)*/
+
+        toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer.addDrawerListener(toggle)
+
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
@@ -37,7 +42,10 @@ class NavigationActivity: AppCompatActivity(), NavigationView.OnNavigationItemSe
         navigationView.setNavigationItemSelectedListener (this)
 
 
-
+        // Configurar RecyclerView para mostrar los CardViews
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewCategorias)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = CategoriasAdapter(getCategorias())
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -70,7 +78,45 @@ class NavigationActivity: AppCompatActivity(), NavigationView.OnNavigationItemSe
         }
         return super.onOptionsItemSelected(item)
     }
+    private fun getCategorias(): List<Categoria> {
+        return listOf(
+            Categoria("Limpieza", listOf(
+                Producto("Gel Limpiador Espumoso 236ml - CeraVe", "Limpieza", R.drawable.primera),
+                Producto("Sebium Gel Moussant 200ml - Bioderma", "Limpieza", R.drawable.segunda),
+                Producto("Gel Limpiador Espumoso 236ml - CeraVe", "Limpieza", R.drawable.primera),
+                Producto("Sebium Gel Moussant 200ml - Bioderma", "Limpieza", R.drawable.segunda),
+                Producto("Gel Limpiador Espumoso 236ml - CeraVe", "Limpieza", R.drawable.primera),
+                Producto("Sebium Gel Moussant 200ml - Bioderma", "Limpieza", R.drawable.segunda),
+                Producto("Gel Limpiador Espumoso 236ml - CeraVe", "Limpieza", R.drawable.primera),
+                Producto("Sebium Gel Moussant 200ml - Bioderma", "Limpieza", R.drawable.segunda),
+                Producto("Gel Limpiador Espumoso 236ml - CeraVe", "Limpieza", R.drawable.primera),
+                Producto("Sebium Gel Moussant 200ml - Bioderma", "Limpieza", R.drawable.segunda),
+            )),
+            Categoria("Hidratación", listOf(
+                Producto("Gel Hidratante HydroBoost Ácido Hialurónico 50g - Neutrogena", "Hidratación", R.drawable.primera),
+                Producto("Gel Hidratante Facial Hyaluron 100ml - Nivea", "Hidratación", R.drawable.segunda),
+                Producto("Gel Limpiador Espumoso 236ml - CeraVe", "Limpieza", R.drawable.primera),
+                Producto("Sebium Gel Moussant 200ml - Bioderma", "Limpieza", R.drawable.segunda),
+                Producto("Gel Limpiador Espumoso 236ml - CeraVe", "Limpieza", R.drawable.primera),
+                Producto("Sebium Gel Moussant 200ml - Bioderma", "Limpieza", R.drawable.segunda),
+                Producto("Gel Limpiador Espumoso 236ml - CeraVe", "Limpieza", R.drawable.primera),
+                Producto("Sebium Gel Moussant 200ml - Bioderma", "Limpieza", R.drawable.segunda),
 
+            )),
+            Categoria("Protección Solar", listOf(
+                Producto("Photoderm AR SPF50+ - Bioderma", "Protección Solar", R.drawable.primera),
+                Producto("Anthelios UV Mune400 SPF50+ - La Roche Posay", "Protección Solar", R.drawable.segunda),
+                Producto("Gel Limpiador Espumoso 236ml - CeraVe", "Limpieza", R.drawable.primera),
+                Producto("Sebium Gel Moussant 200ml - Bioderma", "Limpieza", R.drawable.segunda),
+                Producto("Gel Limpiador Espumoso 236ml - CeraVe", "Limpieza", R.drawable.primera),
+                Producto("Sebium Gel Moussant 200ml - Bioderma", "Limpieza", R.drawable.segunda),
+                Producto("Gel Limpiador Espumoso 236ml - CeraVe", "Limpieza", R.drawable.primera),
+                Producto("Sebium Gel Moussant 200ml - Bioderma", "Limpieza", R.drawable.segunda),
+                Producto("Gel Limpiador Espumoso 236ml - CeraVe", "Limpieza", R.drawable.primera),
+                Producto("Sebium Gel Moussant 200ml - Bioderma", "Limpieza", R.drawable.segunda)
+            ))
+        )
+    }
 
 }
 
