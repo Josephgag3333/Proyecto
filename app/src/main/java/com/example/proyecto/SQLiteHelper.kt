@@ -175,4 +175,52 @@ class SQLiteHelper(context: Context) : SQLiteOpenHelper(context, "LoveCareApp.db
         db.close()
         return resultado > 0
     }
+    // Método para actualizar los datos del usuario
+    fun actualizarDatosUsuario(email: String, nombre: String, apellidos: String, telefono: String): Boolean {
+        val db = writableDatabase
+        val valores = ContentValues().apply {
+            put(COLUMN_USER_FIRSTNAME, nombre)
+            put(COLUMN_USER_LASTNAME, apellidos)
+            put(COLUMN_USER_PHONE, telefono)
+        }
+
+        val resultado = db.update(TABLE_USERS, valores, "$COLUMN_USER_EMAIL = ?", arrayOf(email))
+        db.close()
+
+        return resultado > 0
+    }
+
+    // Método para eliminar la cuenta del usuario
+    fun eliminarCuenta(email: String): Boolean {
+        val db = writableDatabase
+        val resultado = db.delete(TABLE_USERS, "$COLUMN_USER_EMAIL = ?", arrayOf(email))
+        db.close()
+
+        return resultado > 0
+    }
+
+    fun obtenerDatosUsuario(email: String): Usuario? {
+        val db = readableDatabase
+        val consulta = "SELECT $COLUMN_USER_ID, $COLUMN_USER_FIRSTNAME, $COLUMN_USER_LASTNAME, $COLUMN_USER_PHONE FROM $TABLE_USERS WHERE $COLUMN_USER_EMAIL = ?"
+        val cursor = db.rawQuery(consulta, arrayOf(email))
+
+        var usuario: Usuario? = null
+        if (cursor.moveToFirst()) {
+            usuario = Usuario(
+                cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USER_ID)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_FIRSTNAME)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_LASTNAME)),
+                email,
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_PHONE))
+            )
+        }
+
+        cursor.close()
+        db.close()
+
+        return usuario
+    }
+
+
+
 }

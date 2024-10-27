@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -101,11 +102,24 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             R.id.nav_item_nosotros -> Toast.makeText(this, "Nosotros", Toast.LENGTH_SHORT).show()
             R.id.nav_item_contactanos -> Toast.makeText(this, "Contactanos", Toast.LENGTH_SHORT).show()
             R.id.nav_item_mipedido -> Toast.makeText(this, "MiPedido", Toast.LENGTH_SHORT).show()
+            R.id.action_logout -> mostrarDialogoCerrarSesion()
+
+            // Para llamar al usuario menu
+            R.id.nav_item_micuenta -> {
+                supportFragmentManager.commit {
+                    replace<MiCuentaFragment>(R.id.frameContainer)
+                    setReorderingAllowed(true)
+                    addToBackStack("replacement")
+                }
+                true
+            }
+
         }
 
         drawer.closeDrawer(GravityCompat.START)
         return true
     }
+
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
@@ -116,23 +130,42 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         super.onConfigurationChanged(newConfig)
         toggle.onConfigurationChanged(newConfig)
     }
-/* // Para cerrar sesion
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)) {
-            return true
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    // Metodos Para el cierre de Sesion de Usuario
+
+    private fun mostrarDialogoCerrarSesion() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Cerrar sesión")
+        builder.setMessage("¿Estás seguro que deseas cerrar sesión?")
+
+        builder.setPositiveButton("Sí") { dialog, _ ->
+            cerrarSesion()
+            dialog.dismiss()
         }
-        return super.onOptionsItemSelected(item)
-    }*/
+
+        builder.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_logout -> {
-                // Lógica para cerrar sesión
-                cerrarSesion()
+                mostrarDialogoCerrarSesion()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
+
 
     private fun cerrarSesion() {
         val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
@@ -145,10 +178,5 @@ class NavigationActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         startActivity(intent)
         finish()
     }
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        return true
-    }
-
 
 }
